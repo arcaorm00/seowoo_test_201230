@@ -1,0 +1,13 @@
+package test;
+
+import java.util.Date;
+
+public class FreeboardVo {
+
+	private String code_type;
+	private int num;
+	private String name;
+	private String title;
+	private String content;
+	private Date regdate;
+}

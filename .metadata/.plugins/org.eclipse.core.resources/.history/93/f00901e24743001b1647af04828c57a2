@@ -1,0 +1,14 @@
+package test;
+
+import java.sql.Connection;
+
+public class JDBCConnectionTest {
+
+	public static void main(String[] args) {
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin@localhost:1521/XE";
+		String username = "kwak";
+		String password = "arm";
+		
+	}
+}
