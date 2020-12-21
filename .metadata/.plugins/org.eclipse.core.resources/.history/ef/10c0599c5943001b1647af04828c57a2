@@ -4,13 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class JDBCConnectionTest2 {
 	
 	public static Connection getConnection(){
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@localhost:1521/XE";
+		String url = "jdbc:oracle:thin:@localthost:1521/XE";
 		String username = "kwak";
 		String password = "arm";
 		
@@ -26,7 +28,8 @@ public class JDBCConnectionTest2 {
 		return conn;
 	}
 	
-	public static void getFreeBoard(){
+	public static List getFreeBoard(){
+		List list = new ArrayList();
 		String sql = "select * from FREEBOARD";
 		
 		try{
@@ -49,6 +52,6 @@ public class JDBCConnectionTest2 {
 	}
 
 	public static void main(String[] args) {
-		getFreeBoard();
+		
 	}
 }
