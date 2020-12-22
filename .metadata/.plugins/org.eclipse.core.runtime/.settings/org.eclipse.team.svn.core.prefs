@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
 externalMigrateFromAuthorizationDatabase/isMigrated=true
 migrateFromAuthorizationDatabase/isMigrated=true
+repositories/10cbe5496043001b1647af04828c57a2=10cbe5496043001b1647af04828c57a2;https\://192.168.10.7\:8443/Education;https\://192.168.10.7\:8443/Education;branches;tags;trunk;true;;;;false;;;0
