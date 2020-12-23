@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 	<div>
 		<h1>자유게시판</h1>
 	</div>
@@ -34,13 +33,13 @@
 	<div>
 		<table border="1">
 			<tbody>
-					<c:forEach var="dto" items="${freeBoardList}">
+					<c:forEach var="dto" items="${ freeBoardList }">
 					<tr>
-						<td style="width: 55px; padding-left: 30px;" align="center">${dto.codeType }</td>
-						<td style="width: 50px; padding-left: 10px;" align="center">${dto.num }</td>
-						<td style="width: 125px; "" align="center"><a href="./freeBoardDetail.ino?num=${dto.num }">${dto.title }</a></td>
-						<td style="width: 48px; padding-left: 50px;" align="center">${dto.name }</td>
-						<td style="width: 100px; padding-left: 95px;" align="center">${dto.regdate }</td>
+						<td style="width: 55px; padding-left: 30px;" align="center">${ dto.codeType }</td>
+						<td style="width: 50px; padding-left: 10px;" align="center">${ dto.num }</td>
+						<td style="width: 125px; align="center"><a href="./freeBoardDetail.ino?num=${ dto.num }">${ dto.title }</a></td>
+						<td style="width: 48px; padding-left: 50px;" align="center">${ dto.name }</td>
+						<td style="width: 100px; padding-left: 95px;" align="center">${ dto.regdate }</td>
 					<tr>
 					</c:forEach>
 			</tbody>

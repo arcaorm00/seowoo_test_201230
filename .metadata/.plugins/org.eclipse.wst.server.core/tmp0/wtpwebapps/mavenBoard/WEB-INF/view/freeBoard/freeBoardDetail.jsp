@@ -6,6 +6,25 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+	function clickDelete(){
+		var num = $("#num").val();
+		console.log(num);
+		var re = confirm("삭제된 게시물은 복구가 불가능합니다.\n정말로 삭제하시겠습니까?");
+		if(re){
+			$.ajax({
+				data: num,
+				type: "GET",
+				url: "./freeBoardDelete.ino?num="+num,
+				success: function(){
+					alert("게시물이 삭제되었습니다!");
+					location.href="/mavenBoard/main.ino";
+				}
+			})
+		}
+	};
+</script>
 </head>
 <body>
 
@@ -17,6 +36,7 @@
 	</div>
 	<hr style="width: 600px">
 
+<!-- 
 	<form name="insertForm">
 		<input type="hidden" name="num" value="${freeBoardDto.num }" />
 		<table border="1">
@@ -58,9 +78,9 @@
 		</table>
 
 	</form>
-
-
-<%-- 	<input type="hidden" name="num" value="${freeBoardDto.num }" />
+	
+	
+	<input type="hidden" name="num" value="${freeBoardDto.num }" />
 
 		<div style="width: 150px; float: left;">이름 :</div>
 		<div style="width: 500px; float: left;" align="left"><input type="text" name="name" value="${freeBoardDto.name }" readonly/></div>
@@ -79,7 +99,32 @@
 
 		<input type="button" value="취소" onclick="location.href='./main.ino'">
 		&nbsp;&nbsp;&nbsp;
-		</div> --%>
+		</div> 
+-->
+
+	<input type="hidden" id="num" name="num" value="${ freeBoardDto.num }" />
+
+		<div style="width: 150px; float: left;">타입 :</div>
+		<div style="width: 500px; float: left;" align="left"><input type="text" name="codeType" value="${ freeBoardDto.codeType }" readonly/></div>
+		
+		<div style="width: 150px; float: left;">이름 :</div>
+		<div style="width: 500px; float: left;" align="left"><input type="text" name="name" value="${ freeBoardDto.name }" readonly/></div>
+
+		<div style="width: 150px; float: left;">제목 :</div>
+		<div style="width: 500px; float: left;" align="left"><input type="text" name="title"  value="${ freeBoardDto.title }" readonly/></div>
+
+		<div style="width: 150px; float: left;">작성날자</div>
+		<div style="width: 500px; float: left;" align="left"><input type="text" name="regdate"  value="${ freeBoardDto.regdate }" readonly/></div>
+
+		<div style="width: 150px; float: left;">내용 :</div>
+		<div style="width: 500px; float: left;" align="left"><textarea name="content" rows="25" cols="65" readonly >${ freeBoardDto.content }</textarea></div>
+		<div align="right">
+		<input type="button" value="수정" onclick="location.href='./freeBoardModify.ino?num=${ freeBoardDto.num }'">
+		<input type="button" value="삭제" onClick="clickDelete();">
+
+		<input type="button" value="취소" onclick="location.href='./main.ino'">
+		&nbsp;&nbsp;&nbsp;
+		</div> 
 
 </body>
 </html>

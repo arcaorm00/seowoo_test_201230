@@ -35,8 +35,9 @@ public class FreeBoardService {
 		sqlSessionTemplate.update("freeBoardModify", dto);
 	}
 
-	public void FreeBoardDelete (int num) {
-		sqlSessionTemplate.delete("freeBoardDelete", num);
+	public int FreeBoardDelete (int num) {
+		int re = sqlSessionTemplate.delete("freeBoardDelete", num);
+		return re;
 		
 	}
 	

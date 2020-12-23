@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -24,7 +26,7 @@ public class FreeBoardController {
 		List<FreeBoardDto> list = freeBoardService.freeBoardList();
 
 		mav.setViewName("boardMain");
-		mav.addObject("freeBoardList",list);
+		mav.addObject("freeBoardList", list);
 		return mav;
 	}
 	
@@ -34,24 +36,55 @@ public class FreeBoardController {
 	}
 	
 	@RequestMapping("/freeBoardInsertPro.ino")
-	public String freeBoardInsertPro(HttpServletRequest request, FreeBoardDto dto){
+	@ResponseBody
+	public int freeBoardInsertPro(HttpServletRequest request, FreeBoardDto dto){
 		freeBoardService.freeBoardInsertPro(dto);
-		return "redirect:freeBoardDetail.ino?num="+dto.getNum();
+		System.out.println(dto);
+		return dto.getNum();
 	}
 	
 	@RequestMapping("/freeBoardDetail.ino")
-	public ModelAndView freeBoardDetail(HttpServletRequest request){
-		return new ModelAndView("freeBoardDetail", "freeBoardDto", null);
+	public ModelAndView freeBoardDetail(HttpServletRequest request, FreeBoardDto dto){
+		ModelAndView mav = new ModelAndView("freeBoardDetail");
+		FreeBoardDto fb = freeBoardService.getDetailByNum(dto.getNum());
+		mav.addObject("freeBoardDto", fb);
+		return mav;
 	}
 	
-	@RequestMapping("/freeBoardModify.ino")
-	public String freeBoardModify(HttpServletRequest request, FreeBoardDto dto){
-		return "redirect:/main.ino";
+	@RequestMapping(value="/freeBoardModify.ino", method=RequestMethod.GET)
+	public ModelAndView freeBoardModify(HttpServletRequest request){
+		ModelAndView mav = new ModelAndView("freeBoardModify");
+		int num = Integer.parseInt(request.getParameter("num"));
+		FreeBoardDto fb = freeBoardService.getDetailByNum(num);
+		
+		if(fb.getCodeType().equals("자유")){fb.setCodeType("01");}
+		else if(fb.getCodeType().equals("익명")){fb.setCodeType("02");}
+		else if(fb.getCodeType().equals("QnA")){fb.setCodeType("03");}
+		System.out.println(fb);
+		 
+		mav.addObject("freeBoardDto", fb);
+		return mav;
+	}
+	
+	@RequestMapping(value="/freeBoardModifyPro.ino", method=RequestMethod.POST)
+	@ResponseBody
+	public int freeBoardModify(HttpServletRequest request, FreeBoardDto fb){
+		int num = fb.getNum();
+		System.out.println(fb);
+		freeBoardService.freeBoardModify(fb);
+		return num;
 	}
 	
 		
 	@RequestMapping("/freeBoardDelete.ino")
+	@ResponseBody
 	public String FreeBoardDelete(int num){
-		return "redirect:/main.ino";
+		int re = freeBoardService.FreeBoardDelete(num);
+//		return "redirect:/main.ino";
+		String msg = "게시물 삭제에 실패했습니다.";
+		if (re > 0){
+			msg = "게시물이 삭제되었습니다!";
+		}
+		return msg;
 	}
 }

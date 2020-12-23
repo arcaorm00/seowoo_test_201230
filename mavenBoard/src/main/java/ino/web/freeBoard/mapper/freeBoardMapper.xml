@@ -7,16 +7,25 @@
 
 
 	<select id="freeBoardGetList" resultType="freeBoardDto" > <!-- resultType="ino.web.board.dto.BoardDto" -->
-		SELECT CODE_TYPE AS CODETYPE, NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE FROM FREEBOARD
+		SELECT 
+		CASE CODE_TYPE WHEN '01' THEN '자유' WHEN '02' THEN '익명' WHEN '03' THEN 'QnA' END AS CODETYPE,
+		 NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE FROM FREEBOARD ORDER BY NUM
 	</select>
 
 	<insert id="freeBoardInsertPro" parameterType="freeBoardDto">
-		INSERT INTO FREEBOARD(NUM, TITLE, NAME, REGDATE, CONTENT)
-		VALUES( FREEBOARDNUM_SEQ.NEXTVAL, #{title}, #{name}, SYSDATE, #{content})
+		<selectKey keyProperty="num" order="BEFORE" resultType="int">
+			select SEQ_FREEBOARD.NEXTVAL from dual
+		</selectKey>
+		INSERT INTO FREEBOARD(
+		CODE_TYPE, NUM, TITLE, NAME, REGDATE, CONTENT)
+		VALUES( 
+		#{codeType}, #{num}, #{title}, #{name}, SYSDATE, #{content})
 	</insert>
 
 	<select id="freeBoardDetailByNum" resultType="freeBoardDto" parameterType="int">
-		SELECT NUM, TITLE, NAME, TO_CHAR(REGDATE,'YYYY/MM/DD') REGDATE, CONTENT FROM FREEBOARD
+		SELECT 
+		CASE CODE_TYPE WHEN '01' THEN '자유' WHEN '02' THEN '익명' WHEN '03' THEN 'QnA' END AS CODETYPE, 
+		NUM, TITLE, NAME, TO_CHAR(REGDATE,'YYYY/MM/DD') REGDATE, CONTENT FROM FREEBOARD
 		WHERE NUM=#{num}
 	</select>
 
@@ -27,8 +36,7 @@
 
 	<update id="freeBoardModify" parameterType="freeBoardDto">
 		UPDATE FREEBOARD
-		SET TITLE = #{title}
-				, CONTENT = #{content}
+		SET CODE_TYPE = #{codeType}, TITLE = #{title}, CONTENT = #{content}
 		WHERE NUM = #{num}
 
 	</update>

@@ -5,8 +5,48 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$("#insertBtn").click(function(e){
+			
+			e.preventDefault();
+			
+			var deleteBlank = / /gi;
+			
+			var name = $("#name").val().replace(deleteBlank, "");
+			var title = $("#title").val().replace(deleteBlank, "");
+			var content = $("#content").val().replace(deleteBlank, "");
+			
+			if ( name = "" || title == "" || content == "" ){
+				alert("이름 혹은 제목이나 내용을 비워둘 수는 없습니다.");
+				return;
+			}
+			
+			var inputData = $("#insertForm").serialize();
+			
+			$.ajax({
+				data: inputData,
+				type: "POST",
+				url: "./freeBoardInsertPro.ino",
+				success: function(num){
+					alert("게시물이 등록되었습니다!");
+					location.href="/mavenBoard/freeBoardDetail.ino?num="+num;
+				}
+			});
+		});
+		
+		$("#resetBtn").click(function(){
+			$("#name").val("");
+			$("#title").val("");
+			$("#content").val("");
+		});
+	});
+</script>
 </head>
 <body>
+
 	<div>
 		<h1>자유게시판</h1>
 	</div>
@@ -15,14 +55,13 @@
 	</div>
 	<hr style="width: 600px">
 
-	<form action="./freeBoardInsertPro.ino">
-
+	<form id="insertForm" method="POST">
 		<table border="1">
 			<tbody>
 				<tr>
 					<td style="width: 150px;" align="center">타입 :</td>
 					<td style="width: 400px;">
-						<select>
+						<select id="codeType" name="codeType">
 							<option value="01">자유</option>
 							<option value="02">익명</option>
 							<option value="03">QnA</option>
@@ -31,33 +70,29 @@
 				</tr>
 				<tr>
 					<td style="width: 150px;"align="center">이름 :</td>
-					<td style="width: 400px;"><input type="text" name="name"/></td>
+					<td style="width: 400px;"><input type="text" id="name" name="name" required="required"/></td>
 				</tr>
 				<tr>
 					<td style="width: 150px;"align="center">제목 :</td>
-					<td style="width: 400px;"><input type="text" name="title"/></td>
+					<td style="width: 400px;"><input type="text" id="title" name="title" required="required"/></td>
 				</tr>
 				<tr>
 					<td style="width: 150px;"align="center">내용 :</td>
-					<td style="width: 400px;"><textarea name="content" rows="25" cols="65" ></textarea></td>
+					<td style="width: 400px;"><textarea id="content" name="content" rows="25" cols="65" required="required"></textarea></td>
 				</tr>
 			</tbody>
 			<tfoot>
 				<tr>
 					<td></td>
 					<td align="right">
-					<input type="submit" value="글쓰기">
-					<input type="button" value="다시쓰기" onclick="reset()">
-					<input type="button" value="취소" onclick="">
+					<input type="submit" value="글쓰기" id="insertBtn">
+					<input type="button" value="다시쓰기" id="resetBtn">
+					<input type="button" value="취소" onclick="location.href='./main.ino'">
 					&nbsp;&nbsp;&nbsp;
 					</td>
 				</tr>
 			</tfoot>
 		</table>
-
 	</form>
-
-
-
 </body>
 </html>

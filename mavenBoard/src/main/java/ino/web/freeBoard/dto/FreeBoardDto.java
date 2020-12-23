@@ -75,7 +75,7 @@ public class FreeBoardDto {
 
 	@Override
 	public String toString() {
-		return "FreeBoardDto [num=" + num + ", title=" + title + ", name=" + name + ", regdate=" + regdate
+		return "FreeBoardDto [codeType=" + codeType + ", num=" + num + ", title=" + title + ", name=" + name + ", regdate=" + regdate
 				+ ", content=" + content + ", readcnt=" + readcnt + "]";
 	}
 
