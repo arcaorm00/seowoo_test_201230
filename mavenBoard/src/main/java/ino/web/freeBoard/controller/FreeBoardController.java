@@ -4,6 +4,7 @@ import ino.web.freeBoard.dto.FreeBoardDto;
 import ino.web.freeBoard.service.FreeBoardService;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,14 +22,43 @@ public class FreeBoardController {
 	@Autowired
 	private FreeBoardService freeBoardService;
 	
-	@RequestMapping("/main.ino")
-	public ModelAndView main(HttpServletRequest request){
+	@RequestMapping(value={"/main.ino", "/mainSearch.ino"}, method=RequestMethod.GET, produces="application/json; charset=utf-8")
+	@ResponseBody
+	public Object main(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
 		ModelAndView mav = new ModelAndView();
-		List<FreeBoardDto> list = freeBoardService.freeBoardList();
+		System.out.println("searchJson:" + searchJson);
 
-		mav.setViewName("boardMain");
-		mav.addObject("freeBoardList", list);
-		return mav;
+		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
+		
+		System.out.println("LIST: "+list);
+		System.out.println("request.getServletPath(): " + (request.getServletPath().equals("/main.ino")));
+		
+		if (request.getServletPath().equals("/main.ino")){
+			mav.setViewName("boardMain");
+			mav.addObject("freeBoardList", list);
+			return mav;
+		}
+		return list;
+	}
+	
+//	@RequestMapping(value="/main.ino", produces="application/json; charset=utf-8")
+//	@ResponseBody
+//	public Object main(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
+//		ModelAndView mav = new ModelAndView();
+//		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
+//		System.out.println("LIST: "+list);
+//		
+//		mav.setViewName("boardMain");
+//		mav.addObject("freeBoardList", list);
+//		return mav;
+//	}
+	
+	@RequestMapping(value="/mainSearch.ino", produces="application/json; charset=utf-8")
+	@ResponseBody
+	public List<FreeBoardDto> mainSearch(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
+		System.out.println("searchJson:" + searchJson);
+		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
+		return list;
 	}
 	
 	@RequestMapping("/freeBoardInsert.ino")

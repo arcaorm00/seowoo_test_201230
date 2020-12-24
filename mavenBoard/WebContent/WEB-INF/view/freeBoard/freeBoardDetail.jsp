@@ -102,29 +102,45 @@
 		</div> 
 -->
 
-	<input type="hidden" id="num" name="num" value="${ freeBoardDto.num }" />
-
-		<div style="width: 150px; float: left;">타입 :</div>
-		<div style="width: 500px; float: left;" align="left"><input type="text" name="codeType" value="${ freeBoardDto.codeType }" readonly/></div>
-		
-		<div style="width: 150px; float: left;">이름 :</div>
-		<div style="width: 500px; float: left;" align="left"><input type="text" name="name" value="${ freeBoardDto.name }" readonly/></div>
-
-		<div style="width: 150px; float: left;">제목 :</div>
-		<div style="width: 500px; float: left;" align="left"><input type="text" name="title"  value="${ freeBoardDto.title }" readonly/></div>
-
-		<div style="width: 150px; float: left;">작성날자</div>
-		<div style="width: 500px; float: left;" align="left"><input type="text" name="regdate"  value="${ freeBoardDto.regdate }" readonly/></div>
-
-		<div style="width: 150px; float: left;">내용 :</div>
-		<div style="width: 500px; float: left;" align="left"><textarea name="content" rows="25" cols="65" readonly >${ freeBoardDto.content }</textarea></div>
-		<div align="right">
-		<input type="button" value="수정" onclick="location.href='./freeBoardModify.ino?num=${ freeBoardDto.num }'">
-		<input type="button" value="삭제" onClick="clickDelete();">
-
-		<input type="button" value="취소" onclick="location.href='./main.ino'">
-		&nbsp;&nbsp;&nbsp;
-		</div> 
-
+	<form name="insertForm">
+		<input type="hidden" id="num" name="num" value="${ freeBoardDto.num }" />
+		<table border="1">
+			
+			<tbody>
+				<tr>
+					<td style="width: 150px;" align="center">타입 :</td>
+					<td style="width: 400px;"><input type="text" name="codeType" value="${ freeBoardDto.codeType }" readonly/></td>
+				</tr>
+				<tr>
+					<td style="width: 150px;"align="center">이름 :</td>
+					<td style="width: 400px;"><input type="text" name="name" value="${ freeBoardDto.name }" readonly/></td>
+				</tr>
+				<tr>
+					<td style="width: 150px;"align="center">제목 :</td>
+					<td style="width: 400px;"><input type="text" name="title"  value="${ freeBoardDto.title }" readonly/></td>
+				</tr>
+				<tr>
+					<td style="width: 150px;"align="center">작성날자</td>
+					<td style="width: 400px;"><input type="text" name="regdate"  value="${ freeBoardDto.regdate }" readonly/></td>
+				</tr>
+				<tr>
+					<td style="width: 150px;"align="center">내용 :</td>
+					<td style="width: 400px;"><textarea name="content" rows="25" cols="65" readonly >${ freeBoardDto.content }</textarea></td>
+				</tr>
+			</tbody>
+			
+			<tfoot>
+				<tr>
+					<td></td>
+					<td align="right">
+						<input type="button" value="수정" onclick="location.href='./freeBoardModify.ino?num=${ freeBoardDto.num }'">
+						<input type="button" value="삭제" onClick="clickDelete();">
+						<input type="button" value="취소" onclick="location.href='./main.ino'">
+						&nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</form>
 </body>
 </html>
