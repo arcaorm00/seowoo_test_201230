@@ -17,9 +17,16 @@
 				data: num,
 				type: "GET",
 				url: "./freeBoardDelete.ino?num="+num,
-				success: function(){
-					alert("게시물이 삭제되었습니다!");
-					location.href="/mavenBoard/main.ino";
+				success: function(data){
+					var re = data.re;
+					var list = data.list;
+					console.log(list);
+					if(re > 0){
+						alert("게시물이 삭제되었습니다!");
+						location.href="/mavenBoard/main.ino";
+					}else{
+						alert("게시물 삭제에 실패했습니다!");
+					}
 				}
 			})
 		}
@@ -125,7 +132,7 @@
 				</tr>
 				<tr>
 					<td style="width: 150px;"align="center">내용 :</td>
-					<td style="width: 400px;"><textarea name="content" rows="25" cols="65" readonly >${ freeBoardDto.content }</textarea></td>
+					<td style="width: 400px;"><textarea style="resize: none;" name="content" rows="25" cols="65" readonly >${ freeBoardDto.content }</textarea></td>
 				</tr>
 			</tbody>
 			

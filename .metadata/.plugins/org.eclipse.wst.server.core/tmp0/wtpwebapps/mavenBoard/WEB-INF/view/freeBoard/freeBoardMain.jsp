@@ -15,7 +15,7 @@
 
 			var searchSelect = $("#searchSelect").val();
 			var searchKeyword = $("#searchKeyword").val().replace(deleteBlank, "");
-						
+			
 			if(searchSelect == 'num' && !searchKeyword.replace(regExIsNumeric, "") == ""){
 				alert("검색어를 확인해주세요.\n글번호 검색은 숫자만 가능합니다.");
 				return;
@@ -31,23 +31,26 @@
 				url: "./mainSearch.ino",
 				success: function(data){
 					console.log(data);
+					var list = data.list;
+					
 					$("#boardTable").empty();
 					
 					var tbody = $("<tbody></tbody>");
 					
-					if(data.length > 0){
-						$.each(data, function(idx, board){
+					if(list.length > 0){
+						for (var i = 0; i < list.length; i++) {
+							var board = list[i];
 							var tr = $("<tr></tr>");
 							var type = $("<td style='width: 55px; padding-left: 30px;' align='center'></td>").html(board.codeType);
 							var num = $("<td style='width: 50px; padding-left: 10px;' align='center'></td>").html(board.num);
-							var link = $("<a href='./freeBoardDetail.ino?num="+board.num+"'></a>");
-							var title = $("<td style='width: 125px;' align='center'></td>").text(board.title);
-							link.append(title);
+							var link = $("<a href='./freeBoardDetail.ino?num="+board.num+"'></a>").text(board.title);
+							var title = $("<td style='width: 125px;' align='left'></td>");
+							title.append(link);
 							var name = $("<td style='width: 48px; padding-left: 50px;' align='center'></td>").html(board.name);
 							var regdate = $("<td style='width: 100px; padding-left: 95px;' align='center'></td>").html(board.regdate);
-							tr.append(type, num, link, name, regdate);
+							tr.append(type, num, title, name, regdate);
 							tbody.append(tr);
-						});
+						}
 					}else{
 						var h4 = $("<h4 style='padding: 20px'></h4>").html("검색어에 해당하는 결과가 존재하지 않습니다.");
 						var button = $("<button>목록으로</button>").attr("onClick", "location.href='./main.ino'");
@@ -72,6 +75,7 @@
 	
 	<div>
 		<select id="searchSelect">
+			<option value="">전체보기</option>
 			<option value="num">글번호</option>
 			<option value="title">글제목</option>
 		</select>
@@ -105,7 +109,7 @@
 					<tr>
 						<td style="width: 55px; padding-left: 30px;" align="center">${ dto.codeType }</td>
 						<td style="width: 50px; padding-left: 10px;" align="center">${ dto.num }</td>
-						<td style="width: 125px; align="center"><a href="./freeBoardDetail.ino?num=${ dto.num }">${ dto.title }</a></td>
+						<td style="width: 125px;" align="left"><a href="./freeBoardDetail.ino?num=${ dto.num }">${ dto.title }</a></td>
 						<td style="width: 48px; padding-left: 50px;" align="center">${ dto.name }</td>
 						<td style="width: 100px; padding-left: 95px;" align="center">${ dto.regdate }</td>
 					<tr>

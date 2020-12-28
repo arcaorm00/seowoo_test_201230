@@ -30,9 +30,19 @@
 				data: inputData,
 				type: "POST",
 				url: "./freeBoardInsertPro.ino",
-				success: function(num){
-					alert("게시물이 등록되었습니다!");
-					location.href="/mavenBoard/freeBoardDetail.ino?num="+num;
+				success: function(data){
+					var re = data.re;
+					var num = data.num;
+					var list = data.list;
+					console.log(list);
+					
+					if(re > 0){
+						alert("게시물이 등록되었습니다!");
+						//location.href="/mavenBoard/main.ino";
+					}else{
+						alert("게시물 등록에 실패했습니다!\n게시물 글자 수가 너무 많을 수 있습니다.");
+					}
+					// location.href="/mavenBoard/freeBoardDetail.ino?num="+num;
 				}
 			});
 		});

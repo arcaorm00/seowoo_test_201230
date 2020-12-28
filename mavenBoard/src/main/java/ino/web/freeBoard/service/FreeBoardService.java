@@ -15,15 +15,23 @@ public class FreeBoardService {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
-	public List<FreeBoardDto> freeBoardList(Map<String, String> search){
+	public List<FreeBoardDto> freeBoardList(Map<String, Object> search){
 //		System.out.println("HERE IS SERVICE: " + search.get("keyword"));
 		List<FreeBoardDto> list = sqlSessionTemplate.selectList("freeBoardGetList", search);
 		return list;
 	}
 	
 	
-	public void freeBoardInsertPro(FreeBoardDto dto){
-		sqlSessionTemplate.insert("freeBoardInsertPro",dto);
+	public int freeBoardInsertPro(FreeBoardDto dto){
+		int re = 0;
+		
+		try{
+			re = sqlSessionTemplate.insert("freeBoardInsertPro", dto);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return re;
 	}
 	
 	public FreeBoardDto getDetailByNum(int num){
@@ -34,14 +42,25 @@ public class FreeBoardService {
 		return sqlSessionTemplate.selectOne("freeBoardNewNum");
 	}
 	
-	public void freeBoardModify(FreeBoardDto dto){
-		sqlSessionTemplate.update("freeBoardModify", dto);
+	public int freeBoardModify(FreeBoardDto dto){
+		int re = 0;
+		
+		try{
+			re = sqlSessionTemplate.update("freeBoardModify", dto);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return re;
 	}
 
 	public int FreeBoardDelete (int num) {
-		int re = sqlSessionTemplate.delete("freeBoardDelete", num);
+		int re = 0;
+		try{
+			re = sqlSessionTemplate.delete("freeBoardDelete", num);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		return re;
-		
 	}
 	
 }

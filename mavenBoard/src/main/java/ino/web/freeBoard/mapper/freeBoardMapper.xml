@@ -11,14 +11,12 @@
 		CASE CODE_TYPE WHEN '01' THEN '자유' WHEN '02' THEN '익명' WHEN '03' THEN 'QnA' END AS CODETYPE,
 		 NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE 
 		 FROM FREEBOARD 
-			<choose>
-				<when test="searchField != null and !searchField.equals('') and searchField.equals('num')">
-					WHERE NUM = #{keyword}
-				</when>
-				<when test="searchField != null and !searchField.equals('') and searchField.equals('title')">
-					WHERE TITLE like '%'||#{keyword}||'%'
-				</when>
-			</choose>
+			<if test="searchField != null and !searchField.equals('') and searchField.equals('num')">
+				WHERE NUM = #{keyword}
+			</if>
+			<if test="searchField != null and !searchField.equals('') and searchField.equals('title')">
+				WHERE TITLE like '%'||#{keyword}||'%'
+			</if>
 		 ORDER BY NUM
 	</select>
 

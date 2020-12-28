@@ -3,6 +3,7 @@ package ino.web.freeBoard.controller;
 import ino.web.freeBoard.dto.FreeBoardDto;
 import ino.web.freeBoard.service.FreeBoardService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,9 +44,16 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/main.ino", produces="application/json; charset=utf-8")
 	@ResponseBody
-	public ModelAndView main(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
+	public ModelAndView main(HttpServletRequest request, 
+			@RequestParam(defaultValue="") String searchField, 
+			@RequestParam(defaultValue="") String keyword){
 		ModelAndView mav = new ModelAndView();
-		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchField", searchField);
+		map.put("keyword", keyword);
+		
+		List<FreeBoardDto> list = freeBoardService.freeBoardList(map);
 		System.out.println("LIST: "+list);
 		
 		mav.setViewName("boardMain");
@@ -55,10 +63,21 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/mainSearch.ino", produces="application/json; charset=utf-8")
 	@ResponseBody
-	public List<FreeBoardDto> mainSearch(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
-		System.out.println("searchJson:" + searchJson);
-		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
-		return list;
+	public Map<String, Object> mainSearch(HttpServletRequest request, 
+			@RequestParam(defaultValue="") String searchField,
+			@RequestParam(defaultValue="") String keyword){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("searchField", searchField);
+		map.put("keyword", keyword);
+		
+		List<FreeBoardDto> list = freeBoardService.freeBoardList(map);
+		System.out.println("LIST: "+list);
+		
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("list", list);
+		
+		return returnMap;
 	}
 	
 	@RequestMapping("/freeBoardInsert.ino")
@@ -68,10 +87,15 @@ public class FreeBoardController {
 	
 	@RequestMapping("/freeBoardInsertPro.ino")
 	@ResponseBody
-	public int freeBoardInsertPro(HttpServletRequest request, FreeBoardDto dto){
-		freeBoardService.freeBoardInsertPro(dto);
-		System.out.println(dto);
-		return dto.getNum();
+	public Map<String, Object> freeBoardInsertPro(HttpServletRequest request, FreeBoardDto dto){
+		int re = freeBoardService.freeBoardInsertPro(dto);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("re", re);
+		map.put("num", dto.getNum());
+		map.put("list", mainSearch(request, "", "").get("list"));
+		
+		return map;
 	}
 	
 	@RequestMapping("/freeBoardDetail.ino")
@@ -99,23 +123,29 @@ public class FreeBoardController {
 	
 	@RequestMapping(value="/freeBoardModifyPro.ino", method=RequestMethod.POST)
 	@ResponseBody
-	public int freeBoardModify(HttpServletRequest request, FreeBoardDto fb){
+	public Map<String, Object> freeBoardModify(HttpServletRequest request, FreeBoardDto fb){
 		int num = fb.getNum();
 		System.out.println(fb);
-		freeBoardService.freeBoardModify(fb);
-		return num;
+		int re = freeBoardService.freeBoardModify(fb);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("re", re);
+		map.put("num", num);
+		map.put("list", mainSearch(request, "", "").get("list"));
+		
+		return map;
 	}
 	
 		
 	@RequestMapping("/freeBoardDelete.ino")
 	@ResponseBody
-	public String FreeBoardDelete(int num){
+	public Map<String, Object> FreeBoardDelete(HttpServletRequest request,int num){
 		int re = freeBoardService.FreeBoardDelete(num);
 //		return "redirect:/main.ino";
-		String msg = "게시물 삭제에 실패했습니다.";
-		if (re > 0){
-			msg = "게시물이 삭제되었습니다!";
-		}
-		return msg;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("re", re);
+		map.put("list", mainSearch(request, "", "").get("list"));
+		
+		return map;
 	}
 }
