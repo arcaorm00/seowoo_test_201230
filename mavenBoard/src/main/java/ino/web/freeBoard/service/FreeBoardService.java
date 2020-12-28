@@ -15,18 +15,18 @@ public class FreeBoardService {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
-	public List<FreeBoardDto> freeBoardList(Map<String, Object> search){
+	public List<FreeBoardDto> freeBoardList(Map<String, Object> map){
 //		System.out.println("HERE IS SERVICE: " + search.get("keyword"));
-		List<FreeBoardDto> list = sqlSessionTemplate.selectList("freeBoardGetList", search);
+		List<FreeBoardDto> list = sqlSessionTemplate.selectList("freeBoardGetList", map);
 		return list;
 	}
 	
 	
-	public int freeBoardInsertPro(FreeBoardDto dto){
+	public int freeBoardInsertPro(Map<String, Object> map){
 		int re = 0;
 		
 		try{
-			re = sqlSessionTemplate.insert("freeBoardInsertPro", dto);
+			re = sqlSessionTemplate.insert("freeBoardInsertPro", map);
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -42,11 +42,11 @@ public class FreeBoardService {
 		return sqlSessionTemplate.selectOne("freeBoardNewNum");
 	}
 	
-	public int freeBoardModify(FreeBoardDto dto){
+	public int freeBoardModify(Map<String, Object> map){
 		int re = 0;
 		
 		try{
-			re = sqlSessionTemplate.update("freeBoardModify", dto);
+			re = sqlSessionTemplate.update("freeBoardModify", map);
 		}catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

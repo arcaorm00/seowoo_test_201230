@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
 <script type="text/javascript">
 	$(function(){
 		$("#searchBtn").on("click", function(){
@@ -69,6 +70,7 @@
 </script>
 </head>
 <body>
+
 	<div>
 		<h1>자유게시판</h1>
 	</div>
@@ -117,7 +119,10 @@
 			</tbody>
 		</table>
 	</div>
-
+	
+	<br>
+	
+	<div>${ page }</div>
 
 </body>
 </html>

@@ -5,21 +5,39 @@
 
 <mapper namespace="FreeBoardMapper">
 
-
-	<select id="freeBoardGetList" resultType="freeBoardDto" > <!-- resultType="ino.web.board.dto.BoardDto" -->
+	<!--
+	<select id="freeBoardGetList" resultType="freeBoardDto" >
 		SELECT 
 		CASE CODE_TYPE WHEN '01' THEN '자유' WHEN '02' THEN '익명' WHEN '03' THEN 'QnA' END AS CODETYPE,
 		 NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE 
 		 FROM FREEBOARD 
-			<choose>
-				<when test="searchField != null and !searchField.equals('') and searchField.equals('num')">
-					WHERE NUM = #{keyword}
-				</when>
-				<when test="searchField != null and !searchField.equals('') and searchField.equals('title')">
-					WHERE TITLE like '%'||#{keyword}||'%'
-				</when>
-			</choose>
+			<if test="searchField != null and !searchField.equals('') and searchField.equals('num')">
+				WHERE NUM = #{keyword}
+			</if>
+			<if test="searchField != null and !searchField.equals('') and searchField.equals('title')">
+				WHERE TITLE like '%'||#{keyword}||'%'
+			</if>
 		 ORDER BY NUM
+	</select>
+	-->
+	
+	<select id="freeBoardGetList" resultType="freeBoardDto" > <!-- resultType="ino.web.board.dto.BoardDto" -->
+		SELECT
+		CASE CODE_TYPE WHEN '01' THEN '자유' WHEN '02' THEN '익명' WHEN '03' THEN 'QnA' END AS CODETYPE,
+		NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE 
+		FROM
+			(SELECT ROWNUM rn, CODE_TYPE, NUM, NAME, TITLE, CONTENT, REGDATE 
+			FROM
+				(SELECT * FROM FREEBOARD 
+				<if test="searchField != null and !searchField.equals('') and searchField.equals('num')">
+					WHERE NUM = #{keyword}
+				</if>
+				<if test="searchField != null and !searchField.equals('') and searchField.equals('title')">
+					WHERE TITLE like '%'||#{keyword}||'%'
+				</if>
+				ORDER BY NUM)  
+		<![CDATA[WHERE ROWNUM <= #{page.page} * #{page.pageSize})]]>	
+		WHERE rn > ( #{page.page}-1 ) * #{page.pageSize}
 	</select>
 
 	<insert id="freeBoardInsertPro" parameterType="freeBoardDto">
@@ -29,7 +47,7 @@
 		INSERT INTO FREEBOARD(
 		CODE_TYPE, NUM, TITLE, NAME, REGDATE, CONTENT)
 		VALUES( 
-		#{codeType}, #{num}, #{title}, #{name}, SYSDATE, #{content})
+		#{dto.codeType}, #{num}, #{dto.title}, #{dto.name}, SYSDATE, #{dto.content})
 	</insert>
 
 	<select id="freeBoardDetailByNum" resultType="freeBoardDto" parameterType="int">
@@ -46,8 +64,8 @@
 
 	<update id="freeBoardModify" parameterType="freeBoardDto">
 		UPDATE FREEBOARD
-		SET CODE_TYPE = #{codeType}, TITLE = #{title}, CONTENT = #{content}
-		WHERE NUM = #{num}
+		SET CODE_TYPE = #{dto.codeType}, TITLE = #{dto.title}, CONTENT = #{dto.content}
+		WHERE NUM = #{dto.num}
 
 	</update>
 

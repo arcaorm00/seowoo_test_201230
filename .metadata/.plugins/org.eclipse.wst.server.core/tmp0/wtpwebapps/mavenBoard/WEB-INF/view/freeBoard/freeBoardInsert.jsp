@@ -38,7 +38,7 @@
 					
 					if(re > 0){
 						alert("게시물이 등록되었습니다!");
-						//location.href="/mavenBoard/main.ino";
+						location.href="/mavenBoard/main.ino";
 					}else{
 						alert("게시물 등록에 실패했습니다!\n게시물 글자 수가 너무 많을 수 있습니다.");
 					}

@@ -1,5 +1,6 @@
 package ino.web.freeBoard.controller;
 
+import ino.web.freeBoard.common.util.Pagination;
 import ino.web.freeBoard.dto.FreeBoardDto;
 import ino.web.freeBoard.service.FreeBoardService;
 
@@ -46,18 +47,25 @@ public class FreeBoardController {
 	@ResponseBody
 	public ModelAndView main(HttpServletRequest request, 
 			@RequestParam(defaultValue="") String searchField, 
-			@RequestParam(defaultValue="") String keyword){
+			@RequestParam(defaultValue="") String keyword, Pagination page){
 		ModelAndView mav = new ModelAndView();
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("searchField", searchField);
 		map.put("keyword", keyword);
+		map.put("page", page);
 		
 		List<FreeBoardDto> list = freeBoardService.freeBoardList(map);
 		System.out.println("LIST: "+list);
 		
 		mav.setViewName("boardMain");
 		mav.addObject("freeBoardList", list);
+
+		page.setEndPage(list.size()+1);
+		page.setUrl("/mavenBoard/main.ino");
+		System.out.println("page ::: " + page.getPagination());
+		mav.addObject("page", page.getPagination());
+		
 		return mav;
 	}
 	
@@ -75,7 +83,7 @@ public class FreeBoardController {
 		System.out.println("LIST: "+list);
 		
 		Map<String, Object> returnMap = new HashMap<String, Object>();
-		returnMap.put("list", list);
+		returnMap.put("input", list);
 		
 		return returnMap;
 	}
@@ -88,7 +96,9 @@ public class FreeBoardController {
 	@RequestMapping("/freeBoardInsertPro.ino")
 	@ResponseBody
 	public Map<String, Object> freeBoardInsertPro(HttpServletRequest request, FreeBoardDto dto){
-		int re = freeBoardService.freeBoardInsertPro(dto);
+		Map<String, Object> insertMap = new HashMap<String, Object>();
+		insertMap.put("dto", dto);
+		int re = freeBoardService.freeBoardInsertPro(insertMap);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("re", re);
@@ -126,7 +136,10 @@ public class FreeBoardController {
 	public Map<String, Object> freeBoardModify(HttpServletRequest request, FreeBoardDto fb){
 		int num = fb.getNum();
 		System.out.println(fb);
-		int re = freeBoardService.freeBoardModify(fb);
+		
+		Map<String, Object> updateMap = new HashMap<String, Object>();
+		updateMap.put("dto", fb);
+		int re = freeBoardService.freeBoardModify(updateMap);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("re", re);
@@ -139,7 +152,7 @@ public class FreeBoardController {
 		
 	@RequestMapping("/freeBoardDelete.ino")
 	@ResponseBody
-	public Map<String, Object> FreeBoardDelete(HttpServletRequest request,int num){
+	public Map<String, Object> FreeBoardDelete(HttpServletRequest request, int num){
 		int re = freeBoardService.FreeBoardDelete(num);
 //		return "redirect:/main.ino";
 		Map<String, Object> map = new HashMap<String, Object>();
