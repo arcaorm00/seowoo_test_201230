@@ -22,36 +22,36 @@ public class FreeBoardController {
 	@Autowired
 	private FreeBoardService freeBoardService;
 	
-	@RequestMapping(value={"/main.ino", "/mainSearch.ino"}, method=RequestMethod.GET, produces="application/json; charset=utf-8")
-	@ResponseBody
-	public Object main(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
-		ModelAndView mav = new ModelAndView();
-		System.out.println("searchJson:" + searchJson);
-
-		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
-		
-		System.out.println("LIST: "+list);
-		System.out.println("request.getServletPath(): " + (request.getServletPath().equals("/main.ino")));
-		
-		if (request.getServletPath().equals("/main.ino")){
-			mav.setViewName("boardMain");
-			mav.addObject("freeBoardList", list);
-			return mav;
-		}
-		return list;
-	}
-	
-//	@RequestMapping(value="/main.ino", produces="application/json; charset=utf-8")
+//	@RequestMapping(value={"/main.ino", "/mainSearch.ino"}, method=RequestMethod.GET, produces="application/json; charset=utf-8")
 //	@ResponseBody
 //	public Object main(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
 //		ModelAndView mav = new ModelAndView();
+//		System.out.println("searchJson:" + searchJson);
+//
 //		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
-//		System.out.println("LIST: "+list);
 //		
-//		mav.setViewName("boardMain");
-//		mav.addObject("freeBoardList", list);
-//		return mav;
+//		System.out.println("LIST: "+list);
+//		System.out.println("request.getServletPath(): " + (request.getServletPath().equals("/main.ino")));
+//		
+//		if (request.getServletPath().equals("/main.ino")){
+//			mav.setViewName("boardMain");
+//			mav.addObject("freeBoardList", list);
+//			return mav;
+//		}
+//		return list;
 //	}
+	
+	@RequestMapping(value="/main.ino", produces="application/json; charset=utf-8")
+	@ResponseBody
+	public ModelAndView main(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
+		ModelAndView mav = new ModelAndView();
+		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
+		System.out.println("LIST: "+list);
+		
+		mav.setViewName("boardMain");
+		mav.addObject("freeBoardList", list);
+		return mav;
+	}
 	
 	@RequestMapping(value="/mainSearch.ino", produces="application/json; charset=utf-8")
 	@ResponseBody
