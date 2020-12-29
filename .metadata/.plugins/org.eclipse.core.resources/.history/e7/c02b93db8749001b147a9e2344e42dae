@@ -1,0 +1,5 @@
+package ino.web.freeBoard.common.util;
+
+public class PaginationUtil {
+
+}

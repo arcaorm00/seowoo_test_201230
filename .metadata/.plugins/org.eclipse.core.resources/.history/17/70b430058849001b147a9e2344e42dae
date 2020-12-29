@@ -1,0 +1,19 @@
+package ino.web.freeBoard.common.util;
+
+public class PaginationUtil {
+
+	public static final int PAGE_SIZE = 10;
+	public static final int BLOCK_SIZE = 10;
+	
+	private int curPage;
+	private int totalPage;
+	private int startPage;
+	private int endPage;
+	private int rangePage;
+	
+	private int curBlock;
+	private int totalBlock;
+	private int startBlock;
+	private int endBlock;
+	private int rangeBlock;
+}

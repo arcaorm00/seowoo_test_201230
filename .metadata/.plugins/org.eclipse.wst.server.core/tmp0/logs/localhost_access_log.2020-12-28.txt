@@ -352,3 +352,7 @@
 0:0:0:0:0:0:0:1 - - [28/Dec/2020:16:34:27 +0900] "GET /mavenBoard/main.ino HTTP/1.1" 200 10812
 0:0:0:0:0:0:0:1 - - [28/Dec/2020:16:34:27 +0900] "GET /mavenBoard/main.ino HTTP/1.1" 200 10812
 0:0:0:0:0:0:0:1 - - [28/Dec/2020:16:34:30 +0900] "GET /mavenBoard/mainSearch.ino?searchField=num&keyword=1 HTTP/1.1" 500 18676
+127.0.0.1 - - [28/Dec/2020:16:42:45 +0900] "GET / HTTP/1.1" 404 950
+0:0:0:0:0:0:0:1 - - [28/Dec/2020:16:42:50 +0900] "GET /mavenBoard/main.ino HTTP/1.1" 200 10812
+0:0:0:0:0:0:0:1 - - [28/Dec/2020:16:42:53 +0900] "GET /mavenBoard/main.ino?page=2 HTTP/1.1" 200 6692
+0:0:0:0:0:0:0:1 - - [28/Dec/2020:16:42:54 +0900] "GET /mavenBoard/main.ino?page=1 HTTP/1.1" 200 10812

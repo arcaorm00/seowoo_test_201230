@@ -1,0 +1,95 @@
+package ino.web.freeBoard.common.util;
+
+public class PaginationUtil {
+
+	public static final int PAGE_SIZE = 10;
+	public static final int BLOCK_SIZE = 10;
+	
+	private int currentPage;
+	private int totalPage;
+	private int startPage;
+	private int endPage;
+	private int rangePage;
+	
+	private int currentBlock;
+	private int totalBlock;
+	private int startBlock;
+	private int endBlock;
+	private int rangeBlock;
+	
+	public PaginationUtil(int currentPage, int totalPage) {
+		this.currentPage = currentPage;
+		setStartPage(totalPage);
+		setRangePage(currentPage);
+		
+		currentBlock = 1;
+		setTotalBlock(totalPage);
+		setStartBlock(currentBlock);
+		
+	}
+	
+	public int getCurPage() {
+		return currentPage;
+	}
+	public void setCurPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
+	public int getTotalPage() {
+		return totalPage;
+	}
+	public void setTotalPage(int totalPage) {
+		this.totalPage = (int) Math.ceil(totalPage * 1.0 / PAGE_SIZE); // 전체 리스트 11일 때 page는 2
+	}
+	public int getStartPage() {
+		return startPage;
+	}
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
+	public int getEndPage() {
+		return endPage;
+	}
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+	public int getRangePage() {
+		return rangePage;
+	}
+	
+	public void setRangePage(int currentPage) {
+		
+	}
+	
+	public int getCurBlock() {
+		return currentBlock;
+	}
+	public void setCurBlock(int currentBlock) {
+		this.currentBlock = currentBlock;
+	}
+	public int getTotalBlock() {
+		return totalBlock;
+	}
+	public void setTotalBlock(int totalPage) {
+		totalBlock = (int) Math.ceil(totalPage*1.0 / BLOCK_SIZE);
+	}
+	public int getStartBlock() {
+		return startBlock;
+	}
+	public void setStartBlock(int currentPage) {
+		startBlock = (int) Math.ceil(currentPage * 1.0 / PAGE_SIZE);
+	}
+	public int getEndBlock() {
+		return endBlock;
+	}
+	public void setEndBlock(int endBlock) {
+		this.endBlock = endBlock;
+	}
+	public int getRangeBlock() {
+		return rangeBlock;
+	}
+	public void setRangeBlock(int rangeBlock) {
+		
+	}
+	
+	
+}

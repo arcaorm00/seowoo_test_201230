@@ -16,11 +16,15 @@ public class FreeBoardService {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	public List<FreeBoardDto> freeBoardList(Map<String, Object> map){
-//		System.out.println("HERE IS SERVICE: " + search.get("keyword"));
+		System.out.println("HERE IS SERVICE: " + map);
 		List<FreeBoardDto> list = sqlSessionTemplate.selectList("freeBoardGetList", map);
 		return list;
 	}
 	
+	public int freeBoardGetTotalCnt(Map<String, Object> map){
+		int cnt = sqlSessionTemplate.selectOne("freeBoardGetTotalCnt", map);
+		return cnt;
+	}	
 	
 	public int freeBoardInsertPro(Map<String, Object> map){
 		int re = 0;

@@ -1,0 +1,95 @@
+package ino.web.freeBoard.common.util;
+
+public class PaginationUtil {
+
+	public static final int PAGE_SIZE = 10;
+	public static final int BLOCK_SIZE = 10;
+	
+	private int currentPage;
+	private int totalPage;
+	private int startPage;
+	private int endPage;
+	private int rangePage;
+	
+	private int currentBlock;
+	private int totalBlock;
+	private int startBlock;
+	private int endBlock;
+	private int rangeBlock;
+	
+	public PaginationUtil(int currentPage, int totalPage) {
+		this.currentPage = currentPage;
+		setStartPage(currentPage);
+		setRangePage(currentPage);
+		
+		currentBlock = 1;
+		setTotalBlock(totalPage);
+		setStartBlock(currentBlock);
+		
+	}
+	
+	public int getCurPage() {
+		return currentPage;
+	}
+	public void setCurPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
+	public int getTotalPage() {
+		return totalPage;
+	}
+	public void setTotalPage(int totalPage) {
+		this.totalPage = totalPage;
+	}
+	public int getStartPage() {
+		return startPage;
+	}
+	public void setStartPage(int currentPage) {
+		startPage = (int) Math.ceil(currentPage * 1.0 / totalPage);
+	}
+	public int getEndPage() {
+		return endPage;
+	}
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+	public int getRangePage() {
+		return rangePage;
+	}
+	
+	public void setRangePage(int currentPage) {
+		
+	}
+	
+	public int getCurBlock() {
+		return currentBlock;
+	}
+	public void setCurBlock(int currentBlock) {
+		this.currentBlock = currentBlock;
+	}
+	public int getTotalBlock() {
+		return totalBlock;
+	}
+	public void setTotalBlock(int totalBlock) {
+		this.totalBlock = totalBlock;
+	}
+	public int getStartBlock() {
+		return startBlock;
+	}
+	public void setStartBlock(int currentPage) {
+		startBlock = currentPage * 1.0 / totalBlock
+	}
+	public int getEndBlock() {
+		return endBlock;
+	}
+	public void setEndBlock(int endBlock) {
+		this.endBlock = endBlock;
+	}
+	public int getRangeBlock() {
+		return rangeBlock;
+	}
+	public void setRangeBlock(int rangeBlock) {
+		
+	}
+	
+	
+}

@@ -9,62 +9,109 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
 <script type="text/javascript">
+	
+	function searchFunction(page){
+		
+		var regExIsNumeric = /^[0-9]+$/;
+		var deleteBlank = / /gi;
+
+		var searchSelect = $("#searchSelect").val();
+		var searchKeyword = $("#searchKeyword").val().replace(deleteBlank, "");
+		
+		if(searchSelect == 'num' && !searchKeyword.replace(regExIsNumeric, "") == ""){
+			alert("검색어를 확인해주세요.\n글번호 검색은 숫자만 가능합니다.");
+			return;
+		}
+		
+		var searchJson = {searchField: searchSelect, keyword: searchKeyword, page: page};
+		console.log(searchJson);
+		
+		$.ajax({
+			data: searchJson,
+			contentType: 'application/json;charset=UTF-8',
+			url: "./mainSearch.ino",
+			success: function(data){
+				console.log(data);
+				var list = data.list;
+				var pagination = data.page;
+				
+				console.log(pagination);
+				
+				$("#boardTable").empty();
+				
+				var tbody = $("<tbody></tbody>");
+				
+				if(list.length > 0){
+					for (var i = 0; i < list.length; i++) {
+						var board = list[i];
+						var tr = $("<tr></tr>");
+						var type = $("<td style='width: 55px; padding-left: 30px;' align='center'></td>").html(board.codeType);
+						var num = $("<td style='width: 50px; padding-left: 10px;' align='center'></td>").html(board.num);
+						var link = $("<a href='./freeBoardDetail.ino?num="+board.num+"'></a>").text(board.title);
+						var title = $("<td style='width: 125px;' align='left'></td>");
+						title.append(link);
+						var name = $("<td style='width: 48px; padding-left: 50px;' align='center'></td>").html(board.name);
+						var regdate = $("<td style='width: 100px; padding-left: 95px;' align='center'></td>").html(board.regdate);
+						tr.append(type, num, title, name, regdate);
+						tbody.append(tr);
+					}
+				}else{
+					var h4 = $("<h4 style='padding: 20px'></h4>").html("검색어에 해당하는 결과가 존재하지 않습니다.");
+					var button = $("<button>목록으로</button>").attr("onClick", "location.href='./main.ino'");
+					tbody.append(h4, button);
+				}
+				
+				$("#boardTable").append(tbody);
+				searchPagination(pagination);
+			},
+			error: function(request, status, error){
+				console.log(status);
+				console.log(error);
+			}
+		});
+	}
+	
+	
+	function searchPagination(page){
+		
+		$("#paginationDiv").empty();
+		
+		var alpha = $("<span><a href='#' onClick='searchFunction(1);'>[처음]</a></span>");
+		var prev = $("<span><a href='#' onClick='searchFunction(" + page.prevPage + ");'>[이전]</a></span>");
+		var next = $("<span><a href='#' onClick='searchFunction(" + page.nextPage + ");'>[다음]</a></span>");
+		var omega = $("<span><a href='#' onClick='searchFunction(" + page.totalBlock + ");'>[끝]</a></span>");
+		// var alpha = $("<span><a href='./main.ino?page=1'>[처음]</a></span>");
+		// var prev = $("<span><a href='./main.ino?page=" + page.prevPage + "'>[이전]</a></span>");
+		// var next = $("<span><a href='./main.ino?page=" + page.nextPage + "'>[다음]</a></span>");
+		// var omega = $("<span><a href='./main.ino?page=" + page.totalBlock + "'>[끝]</a></span>");
+		
+		if(page.currentPage != 1){
+			$("#paginationDiv").append(alpha, prev);
+		}
+		
+		for (var pageNum = page.startBlock; pageNum <= page.endBlock; pageNum++){
+			var span;
+			if (pageNum == page.currentPage){
+				span = $("<span style='color: red;'>" + pageNum + " </span>");
+			}else{
+				span = $("<span><a href='#' onClick='searchFunction(" + pageNum + ");'>" + pageNum + "</a> </span>");
+			}
+			$("#paginationDiv").append(span);
+		}
+		
+		if(page.currentPage != page.totalPage && page.totalPage > 0){
+			$("#paginationDiv").append(next);
+		}
+		if(page.currentPage != page.totalBlock && page.totalBlock > 0){
+			$("#paginationDiv").append(omega);
+		}
+		
+		
+	}
+	
 	$(function(){
 		$("#searchBtn").on("click", function(){
-			var regExIsNumeric = /^[0-9]+$/;
-			var deleteBlank = / /gi;
-
-			var searchSelect = $("#searchSelect").val();
-			var searchKeyword = $("#searchKeyword").val().replace(deleteBlank, "");
-			
-			if(searchSelect == 'num' && !searchKeyword.replace(regExIsNumeric, "") == ""){
-				alert("검색어를 확인해주세요.\n글번호 검색은 숫자만 가능합니다.");
-				return;
-			}
-			
-			var searchJson = {searchField: searchSelect, keyword: searchKeyword};
-			
-			console.log(searchJson);
-			
-			$.ajax({
-				data: searchJson,
-				contentType: 'application/json;charset=UTF-8',
-				url: "./mainSearch.ino",
-				success: function(data){
-					console.log(data);
-					var list = data.list;
-					
-					$("#boardTable").empty();
-					
-					var tbody = $("<tbody></tbody>");
-					
-					if(list.length > 0){
-						for (var i = 0; i < list.length; i++) {
-							var board = list[i];
-							var tr = $("<tr></tr>");
-							var type = $("<td style='width: 55px; padding-left: 30px;' align='center'></td>").html(board.codeType);
-							var num = $("<td style='width: 50px; padding-left: 10px;' align='center'></td>").html(board.num);
-							var link = $("<a href='./freeBoardDetail.ino?num="+board.num+"'></a>").text(board.title);
-							var title = $("<td style='width: 125px;' align='left'></td>");
-							title.append(link);
-							var name = $("<td style='width: 48px; padding-left: 50px;' align='center'></td>").html(board.name);
-							var regdate = $("<td style='width: 100px; padding-left: 95px;' align='center'></td>").html(board.regdate);
-							tr.append(type, num, title, name, regdate);
-							tbody.append(tr);
-						}
-					}else{
-						var h4 = $("<h4 style='padding: 20px'></h4>").html("검색어에 해당하는 결과가 존재하지 않습니다.");
-						var button = $("<button>목록으로</button>").attr("onClick", "location.href='./main.ino'");
-						tbody.append(h4, button);
-					}
-					
-					$("#boardTable").append(tbody);
-				},
-				error: function(request, status, error){
-					console.log(status);
-					console.log(error);
-				}
-			});
+			searchFunction(1);
 		});
 	});
 </script>
@@ -122,7 +169,32 @@
 	
 	<br>
 	
-	<div>${ page }</div>
+	<div id="paginationDiv">
+		<c:if test="${ pagination.currentPage != 1 }">
+			<span><a href="./main.ino?page=1">[처음]</a></span>
+		</c:if>
+		<c:if test="${ pagination.currentPage != 1 }">
+			<span><a href="./main.ino?page=${ pagination.prevPage }">[이전]</a></span>
+		</c:if>
+		
+		<c:forEach var="pageNum" begin="${ pagination.startBlock }" end="${ pagination.endBlock }">
+			<c:choose>
+				<c:when test="${ pageNum == pagination.currentPage }">
+					<span style="color: red;">${ pageNum }</span>
+				</c:when>
+				<c:otherwise>
+					<span><a href="./main.ino?page=${ pageNum }">${ pageNum }</a></span>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		
+		<c:if test="${ pagination.currentPage != pagination.totalPage && pagination.totalPage > 0 }">
+			<span><a href="./main.ino?page=${ pagination.nextPage }">[다음]</a></span>
+		</c:if>
+		<c:if test="${ pagination.currentPage != pagination.totalBlock && pagination.totalBlock > 0 }">
+			<span><a href="./main.ino?page=${ pagination.totalBlock }">[끝]</a></span>
+		</c:if>
+	</div>
 
 </body>
 </html>
