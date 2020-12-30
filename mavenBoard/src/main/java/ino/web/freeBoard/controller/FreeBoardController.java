@@ -55,6 +55,9 @@ public class FreeBoardController {
 		mav.addObject("freeBoardList", list);
 		mav.addObject("pagination", pageUtil);
 		
+		mav.addObject("searchField", searchField);
+		mav.addObject("keyword", keyword);
+		
 		return mav;
 	}
 	
@@ -84,6 +87,8 @@ public class FreeBoardController {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		returnMap.put("list", list);
 		returnMap.put("page", pageUtil);
+		returnMap.put("searchField", searchField);
+		returnMap.put("keyword", keyword);
 		
 		return returnMap;
 	}
