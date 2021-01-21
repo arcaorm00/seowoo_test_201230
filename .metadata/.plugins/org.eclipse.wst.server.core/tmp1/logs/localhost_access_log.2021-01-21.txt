@@ -54,3 +54,8 @@
 0:0:0:0:0:0:0:1 - - [21/Jan/2021:15:40:35 +0900] "GET /mavenBoard/mainSearch.ino?searchField=title&keyword=test&page=1 HTTP/1.1" 200 1412
 0:0:0:0:0:0:0:1 - - [21/Jan/2021:15:40:39 +0900] "GET /mavenBoard/mainSearch.ino?searchField=title&keyword=%EC%95%88%EB%85%95&page=1 HTTP/1.1" 200 1664
 0:0:0:0:0:0:0:1 - - [21/Jan/2021:15:40:40 +0900] "GET /mavenBoard/main.ino HTTP/1.1" 200 12544
+127.0.0.1 - - [21/Jan/2021:15:41:04 +0900] "GET / HTTP/1.1" 404 804
+0:0:0:0:0:0:0:1 - - [21/Jan/2021:15:41:08 +0900] "GET /mavenBoard/main.ino HTTP/1.1" 200 12544
+0:0:0:0:0:0:0:1 - - [21/Jan/2021:15:41:15 +0900] "GET /mavenBoard/mainSearch.ino?searchField=title&keyword=%EC%95%88%EB%85%95&page=1 HTTP/1.1" 200 1664
+0:0:0:0:0:0:0:1 - - [21/Jan/2021:15:41:18 +0900] "GET /mavenBoard/mainSearch.ino?searchField=title&keyword=test&page=1 HTTP/1.1" 200 1412
+0:0:0:0:0:0:0:1 - - [21/Jan/2021:15:41:36 +0900] "GET /mavenBoard/main.ino HTTP/1.1" 200 12544

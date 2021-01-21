@@ -8,27 +8,29 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-function clickDelete(){
-	var num = $("#num").val();
-	var re = confirm("삭제된 게시물은 복구가 불가능합니다.\n정말로 삭제하시겠습니까?");
-	if(re){
-		$.ajax({
-			data: num,
-			type: "GET",
-			url: "./freeBoardDelete.ino?num="+num,
-			success: function(data){
-				var re = data.re;
-				var list = data.list;
-				if(re > 0){
-					alert("게시물이 삭제되었습니다!");
-					location.href="/mavenBoard/main.ino";
-				}else{
-					alert("게시물 삭제에 실패했습니다!");
+	function clickDelete(){
+		var num = $("#num").val();
+		console.log(num);
+		var re = confirm("삭제된 게시물은 복구가 불가능합니다.\n정말로 삭제하시겠습니까?");
+		if(re){
+			$.ajax({
+				data: num,
+				type: "GET",
+				url: "./freeBoardDelete.ino?num="+num,
+				success: function(data){
+					var re = data.re;
+					var list = data.list;
+					console.log(list);
+					if(re > 0){
+						alert("게시물이 삭제되었습니다!");
+						location.href="/mavenBoard/main.ino";
+					}else{
+						alert("게시물 삭제에 실패했습니다!");
+					}
 				}
-			}
-		})
-	}
-};
+			})
+		}
+	};
 </script>
 </head>
 <body>

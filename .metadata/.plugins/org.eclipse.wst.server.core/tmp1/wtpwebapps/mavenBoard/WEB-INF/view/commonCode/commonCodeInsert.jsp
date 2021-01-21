@@ -32,8 +32,5 @@
 		</div>
 
 	</form>
-
-
-
 </body>
 </html>

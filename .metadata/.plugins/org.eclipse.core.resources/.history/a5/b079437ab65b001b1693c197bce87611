@@ -8,49 +8,51 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-function resetForm(){
-	$("#title").val("");
-	$("#content").val("");
-}
-
-$(function(){
+	function resetForm(){
+		$("#title").val("");
+		$("#content").val("");
+	}
 	
-	$("#modifyBtn").click(function(e){
+	$(function(){
 		
-		e.preventDefault();
-		
-		var deleteBlank = / /gi;
-		
-		var title = $("#title").val().replace(deleteBlank, "");
-		var content = $("#content").val().replace(deleteBlank, "");
-		
-		if ( title == "" || content == "" ){
-			alert("제목이나 내용을 비워둘 수는 없습니다.");
-			return;
-		}
-		
-		var inputData = $("#modifyForm").serialize();
-		
-		$.ajax({
-			data: inputData,
-			type: "POST",
-			url: "./freeBoardModifyPro.ino",
-			success: function(data){
-				var re = data.re;
-				var num = data.num;
-				var list = data.list;
-				
-				if(re > 0){
-					alert("게시물이 수정되었습니다!");
-					location.href="/mavenBoard/main.ino";
-				}else{
-					alert("게시물 수정에 실패했습니다!\n게시물 글자 수가 너무 많을 수 있습니다.");
-				}
+		$("#modifyBtn").click(function(e){
+			
+			e.preventDefault();
+			
+			var deleteBlank = / /gi;
+			
+			var title = $("#title").val().replace(deleteBlank, "");
+			var content = $("#content").val().replace(deleteBlank, "");
+			
+			if ( title == "" || content == "" ){
+				alert("제목이나 내용을 비워둘 수는 없습니다.");
+				return;
 			}
+			
+			var inputData = $("#modifyForm").serialize();
+			
+			$.ajax({
+				data: inputData,
+				type: "POST",
+				url: "./freeBoardModifyPro.ino",
+				success: function(data){
+					var re = data.re;
+					var num = data.num;
+					var list = data.list;
+					
+					if(re > 0){
+						alert("게시물이 수정되었습니다!");
+						location.href="/mavenBoard/main.ino";
+					}else{
+						alert("게시물 수정에 실패했습니다!\n게시물 글자 수가 너무 많을 수 있습니다.");
+					}
+				}
+			});
 		});
+		
 	});
 	
-});
+	
 </script>
 </head>
 <body>

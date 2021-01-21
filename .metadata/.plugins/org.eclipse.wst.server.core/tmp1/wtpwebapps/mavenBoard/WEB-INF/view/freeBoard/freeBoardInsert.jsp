@@ -7,51 +7,50 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-	$(function(){
+$(function(){
+	
+	$("#insertBtn").click(function(e){
 		
-		$("#insertBtn").click(function(e){
-			
-			e.preventDefault();
-			
-			var deleteBlank = / /gi;
-			
-			var name = $("#name").val().replace(deleteBlank, "");
-			var title = $("#title").val().replace(deleteBlank, "");
-			var content = $("#content").val().replace(deleteBlank, "");
-			
-			if ( name = "" || title == "" || content == "" ){
-				alert("이름 혹은 제목이나 내용을 비워둘 수는 없습니다.");
-				return;
-			}
-			
-			var inputData = $("#insertForm").serialize();
-			
-			$.ajax({
-				data: inputData,
-				type: "POST",
-				url: "./freeBoardInsertPro.ino",
-				success: function(data){
-					var re = data.re;
-					var num = data.num;
-					var list = data.list;
-					console.log(list);
-					
-					if(re > 0){
-						alert("게시물이 등록되었습니다!");
-						location.href="/mavenBoard/main.ino";
-					}else{
-						alert("게시물 등록에 실패했습니다!\n게시물 글자 수가 너무 많을 수 있습니다.");
-					}
+		e.preventDefault();
+		
+		var deleteBlank = / /gi;
+		
+		var name = $("#name").val().replace(deleteBlank, "");
+		var title = $("#title").val().replace(deleteBlank, "");
+		var content = $("#content").val().replace(deleteBlank, "");
+		
+		if ( name = "" || title == "" || content == "" ){
+			alert("이름 혹은 제목이나 내용을 비워둘 수는 없습니다.");
+			return;
+		}
+		
+		var inputData = $("#insertForm").serialize();
+		
+		$.ajax({
+			data: inputData,
+			type: "POST",
+			url: "./freeBoardInsertPro.ino",
+			success: function(data){
+				var re = data.re;
+				var num = data.num;
+				var list = data.list;
+				
+				if(re > 0){
+					alert("게시물이 등록되었습니다!");
+					location.href="/mavenBoard/main.ino";
+				}else{
+					alert("게시물 등록에 실패했습니다!\n게시물 글자 수가 너무 많을 수 있습니다.");
 				}
-			});
-		});
-		
-		$("#resetBtn").click(function(){
-			$("#name").val("");
-			$("#title").val("");
-			$("#content").val("");
+			}
 		});
 	});
+	
+	$("#resetBtn").click(function(){
+		$("#name").val("");
+		$("#title").val("");
+		$("#content").val("");
+	});
+});
 </script>
 </head>
 <body>
