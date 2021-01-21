@@ -22,43 +22,6 @@
 			) PAGE_BOARD
 		WHERE rn BETWEEN #{start} and #{end}
 	</select>
-	
-<!-- 
-	<select id="freeBoardGetList" resultType="freeBoardDto" >
-		SELECT 
-		CASE CODE_TYPE WHEN '01' THEN '자유' WHEN '02' THEN '익명' WHEN '03' THEN 'QnA' END AS CODETYPE,
-		 NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE 
-		 FROM FREEBOARD 
-			<if test="searchField != null and !searchField.equals('') and searchField.equals('num')">
-				WHERE NUM = #{keyword}
-			</if>
-			<if test="searchField != null and !searchField.equals('') and searchField.equals('title')">
-				WHERE TITLE like '%'||#{keyword}||'%'
-			</if>
-		 ORDER BY NUM
-	</select>
--->
-
-<!-- 
-	<select id="freeBoardGetList" resultType="freeBoardDto" > 
-		SELECT
-		CASE CODE_TYPE WHEN '01' THEN '자유' WHEN '02' THEN '익명' WHEN '03' THEN 'QnA' END AS CODETYPE,
-		NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE 
-		FROM
-			(SELECT ROWNUM rn, CODE_TYPE, NUM, NAME, TITLE, CONTENT, REGDATE 
-			FROM
-				(SELECT * FROM FREEBOARD 
-				<if test="searchField != null and !searchField.equals('') and searchField.equals('num')">
-					WHERE NUM = #{keyword}
-				</if>
-				<if test="searchField != null and !searchField.equals('') and searchField.equals('title')">
-					WHERE TITLE like '%'||#{keyword}||'%'
-				</if>
-				ORDER BY NUM)  
-		<![CDATA[WHERE ROWNUM <= #{page.page} * #{page.pageSize})]]>	
-		WHERE rn > ( #{page.page}-1 ) * #{page.pageSize}
-	</select>
--->
 
 	<select id="freeBoardGetTotalCnt" resultType="int">
 		SELECT COUNT(*) CNT FROM FREEBOARD
@@ -99,12 +62,11 @@
 
 	</update>
 
-	<update id="freeBoardDelete" parameterType="int">
+	<delete id="freeBoardDelete" parameterType="int">
 		DELETE FROM FREEBOARD
 		WHERE NUM
 		= #{num}
-
-	</update>
+	</delete>
 
 
 </mapper>

@@ -16,7 +16,6 @@ public class FreeBoardService {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	public List<FreeBoardDto> freeBoardList(Map<String, Object> map){
-		System.out.println("HERE IS SERVICE: " + map);
 		List<FreeBoardDto> list = sqlSessionTemplate.selectList("freeBoardGetList", map);
 		return list;
 	}

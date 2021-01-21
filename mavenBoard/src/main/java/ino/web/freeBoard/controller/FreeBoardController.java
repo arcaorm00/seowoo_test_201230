@@ -1,6 +1,5 @@
 package ino.web.freeBoard.controller;
 
-import ino.web.freeBoard.common.util.Pagination;
 import ino.web.freeBoard.common.util.PaginationUtil;
 import ino.web.freeBoard.dto.FreeBoardDto;
 import ino.web.freeBoard.service.FreeBoardService;
@@ -25,7 +24,7 @@ public class FreeBoardController {
 	@Autowired
 	private FreeBoardService freeBoardService;
 	
-	@RequestMapping(value="/main.ino", produces="application/json; charset=utf-8")
+	@RequestMapping(value="/main.ino")
 	@ResponseBody
 	public ModelAndView main(HttpServletRequest request, 
 			@RequestParam(defaultValue="") String searchField, 
@@ -47,9 +46,6 @@ public class FreeBoardController {
 		map.put("end", pageUtil.getEndPage());
 		
 		List<FreeBoardDto> list = freeBoardService.freeBoardList(map);
-		System.out.println("LIST: "+list);
-		
-		System.out.println("PAGINATION ::: " + pageUtil.toString());
 		
 		mav.setViewName("boardMain");
 		mav.addObject("freeBoardList", list);
@@ -61,7 +57,7 @@ public class FreeBoardController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/mainSearch.ino", produces="application/json; charset=utf-8")
+	@RequestMapping(value="/mainSearch.ino")
 	@ResponseBody
 	public Map<String, Object> mainSearch(HttpServletRequest request, 
 			@RequestParam(defaultValue="") String searchField,
@@ -81,8 +77,6 @@ public class FreeBoardController {
 		map.put("end", pageUtil.getEndPage());
 		
 		List<FreeBoardDto> list = freeBoardService.freeBoardList(map);
-		System.out.println("LIST: "+list);
-		System.out.println("PAGINATION ::: " + pageUtil.toString());
 		
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		returnMap.put("list", list);
@@ -92,53 +86,6 @@ public class FreeBoardController {
 		
 		return returnMap;
 	}
-	
-	// 매핑 나누기 시도
-//	@RequestMapping(value={"/main.ino", "/mainSearch.ino"}, method=RequestMethod.GET, produces="application/json; charset=utf-8")
-//	@ResponseBody
-//	public Object main(HttpServletRequest request, @RequestParam Map<String, String> searchJson){
-//		ModelAndView mav = new ModelAndView();
-//		System.out.println("searchJson:" + searchJson);
-//
-//		List<FreeBoardDto> list = freeBoardService.freeBoardList(searchJson);
-//		
-//		System.out.println("LIST: "+list);
-//		System.out.println("request.getServletPath(): " + (request.getServletPath().equals("/main.ino")));
-//		
-//		if (request.getServletPath().equals("/main.ino")){
-//			mav.setViewName("boardMain");
-//			mav.addObject("freeBoardList", list);
-//			return mav;
-//		}
-//		return list;
-//	}
-	
-	// 페이징 시도
-//	@RequestMapping(value="/main.ino", produces="application/json; charset=utf-8")
-//	@ResponseBody
-//	public ModelAndView main(HttpServletRequest request, 
-//			@RequestParam(defaultValue="") String searchField, 
-//			@RequestParam(defaultValue="") String keyword, Pagination page){
-//		ModelAndView mav = new ModelAndView();
-//		
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("searchField", searchField);
-//		map.put("keyword", keyword);
-//		map.put("page", page);
-//		
-//		List<FreeBoardDto> list = freeBoardService.freeBoardList(map);
-//		System.out.println("LIST: "+list);
-//		
-//		mav.setViewName("boardMain");
-//		mav.addObject("freeBoardList", list);
-//
-//		page.setEndPage(list.size()+1);
-//		page.setUrl("/mavenBoard/main.ino");
-//		System.out.println("page ::: " + page.getPagination());
-//		mav.addObject("page", page.getPagination());
-//		
-//		return mav;
-//	}
 	
 	@RequestMapping("/freeBoardInsert.ino")
 	public String freeBoardInsert(){
@@ -155,7 +102,6 @@ public class FreeBoardController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("re", re);
 		map.put("num", dto.getNum());
-//		map.put("list", mainSearch(request, "", "").get("list"));
 		
 		return map;
 	}
@@ -196,7 +142,6 @@ public class FreeBoardController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("re", re);
 		map.put("num", num);
-//		map.put("list", mainSearch(request, "", "").get("list"));
 		
 		return map;
 	}
@@ -206,10 +151,8 @@ public class FreeBoardController {
 	@ResponseBody
 	public Map<String, Object> FreeBoardDelete(HttpServletRequest request, int num){
 		int re = freeBoardService.FreeBoardDelete(num);
-//		return "redirect:/main.ino";
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("re", re);
-//		map.put("list", mainSearch(request, "", "").get("list"));
 		
 		return map;
 	}

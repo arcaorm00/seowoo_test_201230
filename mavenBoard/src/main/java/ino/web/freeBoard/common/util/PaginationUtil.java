@@ -1,28 +1,24 @@
 package ino.web.freeBoard.common.util;
 
-import org.springframework.beans.propertyeditors.CurrencyEditor;
-
 public class PaginationUtil {
 
 	public static final int PAGE_SIZE = 10;
 	public static final int BLOCK_SIZE = 10;
 	
-	// ex) < 1 2 3 4 5 >    < 6 7 8 9 10 >  : 페이지 수 10, 블록 수 2
+	private int currentPage;
+	private int totalPage;
+	private int startPage;
+	private int endPage;
+	private int rangePage;
 	
-	private int currentPage; 	// 현재 페이지
-	private int totalPage;		// 총 페이지 수
-	private int startPage;		// 시작 페이지
-	private int endPage;		// 끝 페이지
-	private int rangePage;		// 시작페이지와 끝 페이지 계산
+	private int currentBlock;
+	private int totalBlock;
+	private int startBlock;
+	private int endBlock;
+	private int rangeBlock;
 	
-	private int currentBlock;	// 현재 블록
-	private int totalBlock;		// 총 블록
-	private int startBlock;		// 시작 블록
-	private int endBlock;		// 끝 블록
-	private int rangeBlock;		// 시작 블록과 끝 블록 계산
-	
-	private int prevPage;		// 이전 페이지
-	private int nextPage;		// 다음 페이지
+	private int prevPage;
+	private int nextPage;
 	
 	public PaginationUtil(int currentPage, int listCnt) {
 		this.currentPage = currentPage;
